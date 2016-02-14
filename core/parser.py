@@ -1,4 +1,4 @@
-from core.ast import *
+from core.ast.ast import *
 
 
 class Parser(object):

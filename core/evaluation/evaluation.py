@@ -1,4 +1,7 @@
-class Evaluator(object):
+from core.ast.visitor import Visitor
+
+
+class Evaluator(Visitor):
     """
     AST visitor for evaluation
     """

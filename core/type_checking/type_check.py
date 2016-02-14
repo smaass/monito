@@ -1,4 +1,7 @@
-class TypeChecker(object):
+from core.ast.visitor import Visitor
+
+
+class TypeChecker(Visitor):
     """
     AST visitor for type-checking
     """

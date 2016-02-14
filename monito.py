@@ -1,6 +1,7 @@
-from core.parser import Parser
-from core.evaluation import Evaluator
 from core.environment import Environment
+from core.evaluation.evaluation import Evaluator
+from core.parser import Parser
+
 
 class Monito(object):
 
@@ -59,7 +60,7 @@ class Monito(object):
 
     @classmethod
     def repl(cls):
-        print 'Welcome to the Monito REPL\n'
+        print('Welcome to the Monito REPL\n')
         runtime = Monito()
         line_breaks = 0
         code_input = ''
@@ -71,7 +72,7 @@ class Monito(object):
             else:
                 prompt = '\t'
 
-            code_input += raw_input(prompt)
+            code_input += input(prompt)
             if code_input.strip() == '(exit)':
                 break
 
@@ -82,7 +83,7 @@ class Monito(object):
 
             value = runtime.eval(code_input)
             if value is not None:
-                print value
+                print(value)
             line_breaks = 0
             code_input = ''
 

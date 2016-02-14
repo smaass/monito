@@ -1,4 +1,4 @@
-from core.evaluation import Primitive
+from core.evaluation.evaluation import Primitive
 
 
 class Environment(object):
