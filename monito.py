@@ -59,6 +59,17 @@ class Monito(object):
         return Monito(environment).eval(code_string)
 
     @classmethod
+    def input(cls, prompt):
+        '''
+        Disgusting trick, because of the stupid python's
+        decision of renaming raw_input to input in version 3
+        '''
+        if hasattr(__builtins__, 'raw_input'):
+            return raw_input(prompt)
+        else:
+            return input(prompt)
+
+    @classmethod
     def repl(cls):
         print('Welcome to the Monito REPL\n')
         runtime = Monito()
@@ -72,7 +83,7 @@ class Monito(object):
             else:
                 prompt = '\t'
 
-            code_input += input(prompt)
+            code_input += cls.input(prompt)
             if code_input.strip() == '(exit)':
                 break
 
