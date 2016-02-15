@@ -61,8 +61,8 @@ class Monito(object):
     @classmethod
     def input(cls, prompt):
         '''
-        Disgusting trick, because of the stupid python's
-        decision of renaming raw_input to input in version 3
+        Disgusting trick, because of python's decision of renaming raw_input
+        to input in version 3
         '''
         if hasattr(__builtins__, 'raw_input'):
             return raw_input(prompt)
