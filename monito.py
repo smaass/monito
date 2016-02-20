@@ -1,11 +1,12 @@
 from core.environment import Environment
-from core.evaluation.evaluation import Evaluator
+from core.evaluation.evaluator import Evaluator
 from core.parser import Parser
 
 
 class Monito(object):
 
-    import math, operator as op
+    import math
+    import operator as op
 
     MATH_BINDINGS = vars(math)
     OP_BINDINGS = {
@@ -28,18 +29,26 @@ class Monito(object):
         'map': lambda f, l: list(map(f, l)),
         'max': max,
         'min': min,
-        'not': op.not_
+        'not': op.not_,
+        'print': print
     }
 
     def __init__(self, environment=None):
         if not environment:
             environment = self.create_base_environment()
         self.environment = environment
+        self.active = True
+
+    def exit_function(self):
+        def exit():
+            self.active = False
+        return exit
 
     def create_base_environment(self):
         env = Environment()
         env.add_primitives(self.MATH_BINDINGS)
         env.add_primitives(self.OP_BINDINGS)
+        env.add_primitives({'exit': self.exit_function()})
         return env
 
     def eval(self, code_string):
@@ -76,7 +85,7 @@ class Monito(object):
         line_breaks = 0
         code_input = ''
 
-        while True:
+        while runtime.active:
 
             if line_breaks == 0:
                 prompt = '>> '
