@@ -1,6 +1,6 @@
 import unittest
 
-from core.evaluation.evaluation import Primitive
+from core.evaluation.evaluator import Primitive
 from monito import Monito
 
 
