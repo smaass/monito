@@ -1,4 +1,5 @@
 from core.ast.visitor import Visitor
+from core.evaluation.values import *
 
 
 class Evaluator(Visitor):
@@ -46,7 +47,7 @@ class Evaluator(Visitor):
         Function expression evaluation.
         Returns closure
         """
-        return Closure(fun_node.params, fun_node.body, env)
+        return Closure(fun_node.params, fun_node.body, env, self)
 
     def visit_app(self, app_node, env):
         """
@@ -83,44 +84,3 @@ class Evaluator(Visitor):
         for definition in local_node.definitions:
             definition.accept(self, new_env)
         return local_node.body.accept(self, new_env)
-
-
-class FunVal(object):
-    """
-    First-order function values
-    """
-    def __call__(self, *args):
-        return self.apply(*args)
-
-    def apply(self, *args):
-        raise NotImplementedError('Must implement apply(*args)')
-
-
-class Primitive(FunVal):
-    """
-    Primitive function
-    """
-    def __init__(self, proc):
-        self.proc = proc
-
-    def apply(self, *args):
-        return self.proc(*args)
-
-
-class Closure(FunVal):
-    """
-    Lexical closure
-    """
-    def __init__(self, params, body, env):
-        self.params = params
-        self.body = body
-        self.env = env
-
-    def apply(self, *values):
-        new_bindings = {
-            self.params[i]: v for i, v in enumerate(values)
-        }
-        return self.body.accept(
-            Evaluator(),
-            self.env.new_environment(new_bindings)
-        )

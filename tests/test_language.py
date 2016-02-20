@@ -53,12 +53,12 @@ class MonitoTestCase(unittest.TestCase):
 
     def test_environment(self):
 
+        runtime = Monito()
         bindings = {
             'x': 4,
             'hola': Monito.run('(max (list 1 3 2))'),
-            '+': Primitive(lambda x, y: x * y)
+            '+': Primitive(lambda x, y: x * y, runtime.environment)
         }
-        runtime = Monito()
         new_env = runtime.environment.new_environment(bindings)
 
         self.assertEqual(Monito.run('(- 3 x)', new_env), -1)

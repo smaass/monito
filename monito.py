@@ -40,9 +40,9 @@ class Monito(object):
         self.active = True
 
     def exit_function(self):
-        def exit():
+        def monito_exit():
             self.active = False
-        return exit
+        return monito_exit
 
     def create_base_environment(self):
         env = Environment()

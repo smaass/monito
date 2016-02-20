@@ -100,7 +100,11 @@ class Parser(object):
         """
         Converts string to list of tokens
         """
-        return chars.replace('(', ' ( ').replace(')', ' ) ').split()
+        return chars\
+            .replace('(', ' ( ')\
+            .replace(')', ' ) ')\
+            .replace(':', ' : ')\
+            .split()
 
     @classmethod
     def sexpr_to_ast(cls, sexpr):
