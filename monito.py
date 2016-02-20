@@ -93,9 +93,6 @@ class Monito(object):
                 prompt = '\t'
 
             code_input += cls.input(prompt)
-            if code_input.strip() == '(exit)':
-                break
-
             balanced, fail_index = Parser.balanced_parens(code_input)
             if not balanced and fail_index == len(code_input):
                 line_breaks += 1
