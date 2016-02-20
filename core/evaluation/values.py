@@ -28,15 +28,16 @@ class Closure(FunVal):
     """
     Lexical closure
     """
-    def __init__(self, params, body, env, evaluator):
-        self.params = params
+    def __init__(self, args, body, env, evaluator):
+        self.arg_names = [arg.identifier for arg in args]
+        self.arg_types = [arg.type for arg in args]
         self.body = body
         self.env = env
         self.evaluator = evaluator
 
     def apply(self, *values):
         new_bindings = {
-            self.params[i]: v for i, v in enumerate(values)
+            self.arg_names[i]: v for i, v in enumerate(values)
         }
         return self.body.accept(
             self.evaluator,

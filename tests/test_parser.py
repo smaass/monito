@@ -1,4 +1,7 @@
 import unittest
+
+from core.ast.ast import Argument
+from core.ast.types import *
 from core.parser import Parser
 
 
@@ -51,3 +54,15 @@ class ParserTestCase(unittest.TestCase):
         self.assertEqual(sexpr_strings[0], '(define x 3)')
         self.assertEqual(sexpr_strings[1], '(define f (x) (+ x 4))')
         self.assertEqual(sexpr_strings[2], '(f x)')
+
+    def test_parse_args(self):
+
+        arg1 = Parser.string_to_sexpr('([x : Num])')
+        arg2 = Parser.string_to_sexpr('([x: Num])')
+        self.assertEqual(arg1, arg2)
+
+        args = Parser.parse_args(arg1)
+        self.assertEqual(
+            [arg.type for arg in args],
+            [NumType()]
+        )

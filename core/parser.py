@@ -1,4 +1,5 @@
 from core.ast.ast import *
+from core.ast.types import *
 
 
 class Parser(object):
@@ -107,6 +108,32 @@ class Parser(object):
             .split()
 
     @classmethod
+    def parse_type(cls, type):
+
+        if isinstance(type, str):
+            if type == 'Num':
+                return NumType()
+            if type == 'Str':
+                return StringType()
+            if type == 'Bool':
+                return BoolType()
+
+    @classmethod
+    def parse_arg(cls, arg_sexpr):
+
+        if isinstance(arg_sexpr, str):
+            return Argument(arg_sexpr, DynamicType())
+
+        if len(arg_sexpr) == 3:
+            return Argument(arg_sexpr[0], cls.parse_type(arg_sexpr[2]))
+
+        raise SyntaxError('Invalid syntax: ' + arg_sexpr)
+
+    @classmethod
+    def parse_args(cls, args_sexpr):
+        return [cls.parse_arg(arg) for arg in args_sexpr]
+
+    @classmethod
     def sexpr_to_ast(cls, sexpr):
         """
         :param sexpr: s-expression to transform to AST
@@ -115,14 +142,14 @@ class Parser(object):
 
         "Numbers and booleans"
         if (
-            type(sexpr) == type(1) or
-            type(sexpr) == type(0.1) or
-            type(sexpr) == type(True)
+            isinstance(sexpr, int) or
+            isinstance(sexpr, float) or
+            isinstance(sexpr, bool)
         ):
             return Val(sexpr)
 
         "Strings and symbols"
-        if type(sexpr) != type([]):
+        if not isinstance(sexpr, list):
             if sexpr.startswith('"') and sexpr.endswith('"'):
                 return Val(sexpr[1:-1])
             return Id(sexpr)
@@ -147,7 +174,7 @@ class Parser(object):
         "Anonymous functions"
         if sexpr[0] == 'fun':
             return Fun(
-                sexpr[1],
+                cls.parse_args(sexpr[1]),
                 cls.sexpr_to_ast(sexpr[2])
             )
 

@@ -71,8 +71,8 @@ class Fun(ASTNode):
     """
     Function expression
     """
-    def __init__(self, params, body):
-        self.params = params
+    def __init__(self, args, body):
+        self.args = args
         self.body = body
 
     def accept(self, visitor, env):
@@ -124,3 +124,12 @@ class Local(ASTNode):
 
     def accept(self, visitor, env):
         return visitor.visit_local(self, env)
+
+
+class Argument(object):
+    """
+    Argument identifier with type
+    """
+    def __init__(self, identifier, type):
+        self.identifier = identifier
+        self.type = type

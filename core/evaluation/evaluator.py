@@ -47,7 +47,7 @@ class Evaluator(Visitor):
         Function expression evaluation.
         Returns closure
         """
-        return Closure(fun_node.params, fun_node.body, env, self)
+        return Closure(fun_node.args, fun_node.body, env, self)
 
     def visit_app(self, app_node, env):
         """

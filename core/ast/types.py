@@ -1,5 +1,8 @@
 class Type(object):
 
+    def __eq__(self, other):
+        return self.is_consistent_with(other)
+
     def is_consistent_with(self, another_type):
         raise NotImplementedError
 

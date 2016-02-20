@@ -1,5 +1,6 @@
 import unittest
-from core.types import *
+
+from core.ast.types import *
 
 
 class TypesTestCase(unittest.TestCase):
