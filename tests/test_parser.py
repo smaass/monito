@@ -1,6 +1,5 @@
 import unittest
 
-from core.ast.ast import Argument
 from core.ast.types import *
 from core.parser import Parser
 
@@ -55,14 +54,69 @@ class ParserTestCase(unittest.TestCase):
         self.assertEqual(sexpr_strings[1], '(define f (x) (+ x 4))')
         self.assertEqual(sexpr_strings[2], '(f x)')
 
+    def to_arg(self, arg_string):
+
+        sexpr = Parser.string_to_sexpr(arg_string)
+        return Parser.parse_arg(sexpr)
+
+    def test_parse_arg(self):
+
+        num_arg1 = Parser.string_to_sexpr('[x : Num]')
+        num_arg2 = Parser.string_to_sexpr('[x: Num]')
+        self.assertEqual(num_arg1, num_arg2)
+
+        num_arg = Parser.parse_arg(num_arg1)
+        self.assertEqual(num_arg.identifier, 'x')
+        self.assertEqual(num_arg.type, NumType())
+
+        string_arg = self.to_arg('[s: Str]')
+        self.assertEqual(string_arg.identifier, 's')
+        self.assertEqual(string_arg.type, StringType())
+
+        bool_arg = self.to_arg('[x: Bool]')
+        self.assertEqual(bool_arg.identifier, 'x')
+        self.assertEqual(bool_arg.type, BoolType())
+
+        list_arg = self.to_arg('[l: (List Str)]')
+        self.assertEqual(list_arg.identifier, 'l')
+        self.assertEqual(list_arg.type, ListType(StringType()))
+
+        dynamic_arg = self.to_arg('d')
+        self.assertEqual(dynamic_arg.identifier, 'd')
+        self.assertEqual(dynamic_arg.type, DynamicType())
+
+        fun_arg = self.to_arg('[f: (Str -> Num)]')
+        self.assertEqual(fun_arg.identifier, 'f')
+        self.assertEqual(fun_arg.type, FunType([StringType()], NumType()))
+
+        fun_arg = self.to_arg('[g: (Num Str -> Bool)]')
+        self.assertEqual(fun_arg.identifier, 'g')
+        self.assertEqual(
+            fun_arg.type,
+            FunType([NumType(), StringType()], BoolType())
+        )
+
+        fun_arg = self.to_arg('[h: ((Num -> Num) -> (Str -> Num))]')
+        self.assertEqual(fun_arg.identifier, 'h')
+        self.assertEqual(
+            fun_arg.type,
+            FunType(
+                [FunType([NumType()], NumType())],
+                FunType([StringType()], NumType())
+            )
+        )
+
     def test_parse_args(self):
 
-        arg1 = Parser.string_to_sexpr('([x : Num])')
-        arg2 = Parser.string_to_sexpr('([x: Num])')
-        self.assertEqual(arg1, arg2)
+        args_str = '([x: (Num -> Str)] [y: (List Num)] z)'
+        args = Parser.parse_args(Parser.string_to_sexpr(args_str))
 
-        args = Parser.parse_args(arg1)
-        self.assertEqual(
-            [arg.type for arg in args],
-            [NumType()]
-        )
+        self.assertEqual(len(args), 3)
+        self.assertEqual(args[0].type, FunType([NumType()], StringType()))
+        self.assertEqual(args[0].identifier, 'x')
+
+        self.assertEqual(args[1].type, ListType(NumType()))
+        self.assertEqual(args[1].identifier, 'y')
+
+        self.assertEqual(args[2].type, DynamicType())
+        self.assertEqual(args[2].identifier, 'z')

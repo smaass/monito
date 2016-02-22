@@ -118,6 +118,19 @@ class Parser(object):
             if type == 'Bool':
                 return BoolType()
 
+        if isinstance(type, list):
+            try:
+                separator = type.index('->')
+                assert separator == len(type) - 2
+                arg_types = [cls.parse_type(arg) for arg in type[:separator]]
+                ret_type = cls.parse_type(type[-1:][0])
+                return FunType(arg_types, ret_type)
+
+            except ValueError:
+                assert len(type) == 2
+                assert type[0] == 'List'
+                return ListType(cls.parse_type(type[1]))
+
     @classmethod
     def parse_arg(cls, arg_sexpr):
 
