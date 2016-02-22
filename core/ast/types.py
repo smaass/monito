@@ -3,7 +3,11 @@ class Type(object):
     def __eq__(self, other):
         return self.is_consistent_with(other)
 
-    def is_consistent_with(self, another_type):
+    def consistency(self, other_type):
+        if self.is_consistent_with(other_type):
+            return self
+
+    def is_consistent_with(self, other_type):
         raise NotImplementedError
 
     def is_consistent_with_num(self):
@@ -49,6 +53,30 @@ class StringType(Type):
         return True
 
 
+class DynamicType(Type):
+
+    def consistency(self, other_type):
+        return other_type
+
+    def is_consistent_with(self, another_type):
+        return True
+
+    def is_consistent_with_num(self):
+        return True
+
+    def is_consistent_with_bool(self):
+        return True
+
+    def is_consistent_with_string(self):
+        return True
+
+    def is_consistent_with_list(self, inner_type):
+        return True
+
+    def is_consistent_with_fun_type(self, fun_type):
+        return True
+
+
 class ListType(Type):
 
     def __init__(self, inner_type):
@@ -80,36 +108,3 @@ class FunType(Type):
                 return False
 
         return self.return_type.is_consistent_with(fun_type.return_type)
-
-
-class DynamicType(Type):
-
-    def __init__(self, last_type=None):
-        self.last_type = last_type
-
-    def is_consistent_with(self, another_type):
-        """
-        Mutates this DynamicType assigning another_type
-        to self.last_type after the first consistency check.
-        This is used to ensure that the consistency relation is
-        not transitive.
-        """
-        if self.last_type is not None:
-            return self.last_type.is_consistent_with(another_type)
-        self.last_type = another_type
-        return True
-
-    def is_consistent_with_num(self):
-        return self.is_consistent_with(NumType())
-
-    def is_consistent_with_bool(self):
-        return self.is_consistent_with(BoolType())
-
-    def is_consistent_with_string(self):
-        return self.is_consistent_with(StringType())
-
-    def is_consistent_with_list(self, inner_type):
-        return self.is_consistent_with(ListType(inner_type))
-
-    def is_consistent_with_fun_type(self, fun_type):
-        return self.is_consistent_with(fun_type)

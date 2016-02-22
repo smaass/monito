@@ -1,5 +1,6 @@
 import unittest
 
+from core.ast.ast import Argument, App
 from core.ast.types import *
 from core.parser import Parser
 
@@ -120,3 +121,20 @@ class ParserTestCase(unittest.TestCase):
 
         self.assertEqual(args[2].type, DynamicType())
         self.assertEqual(args[2].identifier, 'z')
+
+    def test_parse_function_with_types(self):
+
+        definition = '(fun ([x: Num] [y: Num]) (+ x y))'
+        fun_node = Parser.parse(definition)
+        fun_args = fun_node.args
+
+        self.assertEqual(len(fun_args), 2)
+        self.assertTrue(isinstance(fun_args[0], Argument))
+
+        self.assertEqual(fun_args[0].type, NumType())
+        self.assertEqual(fun_args[0].identifier, 'x')
+
+        self.assertEqual(fun_args[1].type, NumType())
+        self.assertEqual(fun_args[1].identifier, 'y')
+
+        self.assertTrue(isinstance(fun_node.body, App))

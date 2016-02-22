@@ -25,7 +25,9 @@ class Parser(object):
             cls.sexpr_to_ast(sexpr) for sexpr in s_expressions
         ]
 
-        return BodySequence(abstract_syntax_trees)
+        if len(abstract_syntax_trees) > 1:
+            return BodySequence(abstract_syntax_trees)
+        return abstract_syntax_trees[0]
 
     @classmethod
     def separate_sexpr_strings(cls, string):

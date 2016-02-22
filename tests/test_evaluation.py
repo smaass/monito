@@ -4,7 +4,7 @@ from core.evaluation.evaluator import Primitive
 from monito import Monito
 
 
-class MonitoTestCase(unittest.TestCase):
+class EvaluationTestCase(unittest.TestCase):
 
     def test_primitive_values(self):
 

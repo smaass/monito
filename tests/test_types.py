@@ -74,15 +74,15 @@ class TypesTestCase(unittest.TestCase):
         self.assertTrue(DynamicType().is_consistent_with(NumType()))
         self.assertTrue(DynamicType().is_consistent_with(BoolType()))
         self.assertTrue(DynamicType().is_consistent_with(StringType()))
-        self.assertTrue(DynamicType().is_consistent_with(ListType(StringType())))
-        self.assertTrue(DynamicType().is_consistent_with(FunType([], NumType())))
+        self.assertTrue(
+            DynamicType().is_consistent_with(ListType(StringType()))
+        )
+        self.assertTrue(
+            DynamicType().is_consistent_with(FunType([], NumType()))
+        )
 
-        dynamic_type = DynamicType()
-        self.assertTrue(StringType().is_consistent_with(dynamic_type))
-        self.assertFalse(NumType().is_consistent_with(dynamic_type))
-        self.assertTrue(StringType().is_consistent_with(dynamic_type))
-
-        dynamic_type = DynamicType()
-        self.assertTrue(NumType().is_consistent_with(dynamic_type))
-        self.assertFalse(StringType().is_consistent_with(dynamic_type))
-        self.assertTrue(NumType().is_consistent_with(dynamic_type))
+        self.assertEqual(DynamicType().consistency(NumType()), NumType())
+        self.assertEqual(NumType().consistency(DynamicType()), NumType())
+        self.assertEqual(
+            DynamicType().consistency(DynamicType()), DynamicType()
+        )
