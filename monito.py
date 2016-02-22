@@ -1,3 +1,4 @@
+from __future__ import print_function
 from core.environment import Environment
 from core.evaluation.evaluator import Evaluator
 from core.parser import Parser

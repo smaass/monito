@@ -155,18 +155,18 @@ class Parser(object):
         :rtype: ASTNode
         """
 
-        "Numbers and booleans"
-        if (
-            isinstance(sexpr, int) or
-            isinstance(sexpr, float) or
-            isinstance(sexpr, bool)
-        ):
-            return Val(sexpr)
+        "Numbers"
+        if isinstance(sexpr, int) or isinstance(sexpr, float):
+            return Number(sexpr)
+
+        "Booleans"
+        if isinstance(sexpr, bool):
+            return Boolean(sexpr)
 
         "Strings and symbols"
         if not isinstance(sexpr, list):
             if sexpr.startswith('"') and sexpr.endswith('"'):
-                return Val(sexpr[1:-1])
+                return String(sexpr[1:-1])
             return Id(sexpr)
 
         if sexpr[0] == 'if':

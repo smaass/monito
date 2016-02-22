@@ -7,11 +7,23 @@ class Evaluator(Visitor):
     AST visitor for evaluation
     """
 
-    def visit_val(self, val_node, env):
+    def visit_number(self, number_node, env):
         """
-        Value expression evaluation
+        Number expression evaluation
         """
-        return val_node.value
+        return number_node.value
+
+    def visit_boolean(self, boolean_node, env):
+        """
+        Boolean expression evaluation
+        """
+        return boolean_node.value
+
+    def visit_string(self, string_node, env):
+        """
+        String expression evaluation
+        """
+        return string_node.value
 
     def visit_if(self, if_node, env):
         """

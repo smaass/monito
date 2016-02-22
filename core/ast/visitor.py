@@ -3,9 +3,21 @@ class Visitor(object):
     AST visitor base class
     """
 
-    def visit_val(self, val_node, env):
+    def visit_number(self, number_node, env):
         """
-        Value expression
+        Number expression
+        """
+        raise NotImplementedError
+
+    def visit_boolean(self, boolean_node, env):
+        """
+        Boolean expression
+        """
+        raise NotImplementedError
+
+    def visit_string(self, string_node, env):
+        """
+        String expression
         """
         raise NotImplementedError
 

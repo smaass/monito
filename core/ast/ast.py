@@ -15,8 +15,23 @@ class Val(ASTNode):
     def __init__(self, value):
         self.value = value
 
+
+class Number(Val):
+
     def accept(self, visitor, env):
-        return visitor.visit_val(self, env)
+        return visitor.visit_number(self, env)
+
+
+class Boolean(Val):
+
+    def accept(self, visitor, env):
+        return visitor.visit_boolean(self, env)
+
+
+class String(Val):
+
+    def accept(self, visitor, env):
+        return visitor.visit_string(self, env)
 
 
 class If(ASTNode):
