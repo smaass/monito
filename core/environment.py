@@ -1,6 +1,6 @@
 from core.evaluation.evaluator import Primitive
 
-
+# TODO: modify environment to include types
 class Environment(object):
     """
     Environment (scope)

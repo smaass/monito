@@ -155,13 +155,13 @@ class Parser(object):
         :rtype: ASTNode
         """
 
-        "Numbers"
-        if isinstance(sexpr, int) or isinstance(sexpr, float):
-            return Number(sexpr)
-
         "Booleans"
         if isinstance(sexpr, bool):
             return Boolean(sexpr)
+
+        "Numbers"
+        if isinstance(sexpr, int) or isinstance(sexpr, float):
+            return Number(sexpr)
 
         "Strings and symbols"
         if not isinstance(sexpr, list):

@@ -1,6 +1,6 @@
 import unittest
 
-from core.ast.ast import Argument, App
+from core.ast.ast import *
 from core.ast.types import *
 from core.parser import Parser
 
@@ -138,3 +138,9 @@ class ParserTestCase(unittest.TestCase):
         self.assertEqual(fun_args[1].identifier, 'y')
 
         self.assertTrue(isinstance(fun_node.body, App))
+
+    def test_ast_generation(self):
+
+        self.assertTrue(isinstance(Parser.parse('false'), Boolean))
+        self.assertTrue(isinstance(Parser.parse('2'), Number))
+        self.assertTrue(isinstance(Parser.parse('0.2'), Number))

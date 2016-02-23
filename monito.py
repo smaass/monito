@@ -2,6 +2,7 @@ from __future__ import print_function
 from core.environment import Environment
 from core.evaluation.evaluator import Evaluator
 from core.parser import Parser
+from core.type_checking.type_checker import TypeChecker
 
 
 class Monito(object):
@@ -63,6 +64,9 @@ class Monito(object):
 
     def interpret(self, ast):
         return ast.accept(Evaluator(), self.environment)
+
+    def typecheck(self, ast):
+        return ast.accept(TypeChecker(), self.environment)
 
     @classmethod
     def run(cls, code_string, environment=None):
