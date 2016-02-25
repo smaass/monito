@@ -25,6 +25,18 @@ class Type(object):
     def is_consistent_with_fun_type(self, fun_type):
         return False
 
+    def is_consistent_with_unit(self):
+        return False
+
+
+class UnitType(Type):
+
+    def is_consistent_with(self, another_type):
+        return another_type.is_consistent_with_unit()
+
+    def is_consistent_with_unit(self):
+        return True
+
 
 class NumType(Type):
 
@@ -74,6 +86,9 @@ class DynamicType(Type):
         return True
 
     def is_consistent_with_fun_type(self, fun_type):
+        return True
+
+    def is_consistent_with_unit(self):
         return True
 
 

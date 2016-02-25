@@ -5,6 +5,15 @@ from core.ast.types import *
 
 class TypesTestCase(unittest.TestCase):
 
+    def test_unit_type(self):
+
+        self.assertTrue(UnitType().is_consistent_with(UnitType()))
+        self.assertTrue(UnitType().is_consistent_with(DynamicType()))
+        self.assertFalse(UnitType().is_consistent_with(BoolType()))
+        self.assertFalse(UnitType().is_consistent_with(StringType()))
+        self.assertFalse(UnitType().is_consistent_with(ListType(NumType())))
+        self.assertFalse(UnitType().is_consistent_with(FunType([], NumType())))
+
     def test_num_consistency(self):
 
         self.assertTrue(NumType().is_consistent_with(NumType()))
