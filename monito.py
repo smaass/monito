@@ -10,29 +10,29 @@ class Monito(object):
     import math
     import operator as op
 
-    MATH_BINDINGS = vars(math)
+    # MATH_BINDINGS = vars(math)
     OP_BINDINGS = {
-        '+': op.add,
-        '-': op.sub,
-        '*': op.mul,
-        '/': lambda x, y: x / y,
-        '>': op.gt,
-        '<': op.lt,
-        '>=': op.ge,
-        '<=': op.le,
-        '=': op.eq,
-        'abs': abs,
-        'append': op.add,
-        'equal?': op.eq,
-        'head': lambda x: x[0],
-        'tail': lambda x: x[1:],
-        'length': len,
-        'list': lambda *x: list(x),
-        'map': lambda f, l: list(map(f, l)),
-        'max': max,
-        'min': min,
-        'not': op.not_,
-        'print': print
+        '+': (op.add, '(Num Num -> Num)'),
+        '-': (op.sub, '(Num Num -> Num)'),
+        '*': (op.mul, '(Num Num -> Num)'),
+        '/': (lambda x, y: x / y, '(Num Num -> Num)'),
+        '>': (op.gt, '(Num Num -> Bool)'),
+        '<': (op.lt, '(Num Num -> Bool)'),
+        '>=': (op.ge, '(Num Num -> Bool)'),
+        '<=': (op.le, '(Num Num -> Bool)'),
+        '=': (op.eq, '(Dyn Dyn -> Bool)'),
+        'abs': (abs, '(Num -> Num)'),
+        'append': (op.add, '(Dyn Dyn -> Dyn)'),
+        'equal?': (op.eq, '(Dyn Dyn -> Bool)'),
+        'head': (lambda x: x[0], '((List Dyn) -> Dyn)'),
+        'tail': (lambda x: x[1:], '(List Dyn) -> (List Dyn))'),
+        'length': (len, '((List Dyn) -> Num)'),
+        'list': (lambda *x: list(x), '(Dyn -> Dyn)'), #TODO: add support for variable size arguments
+        'map': (lambda f, l: list(map(f, l)), '((List Dyn) -> (List Dyn))'),
+        'max': (max, '((List Num) -> Num)'),
+        'min': (min, '((List Num) -> Num)'),
+        'not': (op.not_, '(Bool -> Bool)'),
+        'print': (print, '(Dyn -> Void)')
     }
 
     def __init__(self, environment=None):
@@ -48,9 +48,9 @@ class Monito(object):
 
     def create_base_environment(self):
         env = Environment()
-        env.add_primitives(self.MATH_BINDINGS)
+        # env.add_primitives(self.MATH_BINDINGS)
         env.add_primitives(self.OP_BINDINGS)
-        env.add_primitives({'exit': self.exit_function()})
+        env.add_primitives({'exit': (self.exit_function(), 'Void -> Void')})
         return env
 
     def eval(self, code_string):

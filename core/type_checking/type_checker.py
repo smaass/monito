@@ -64,12 +64,12 @@ class TypeChecker(Visitor):
     #     return or_node.cond1.accept(self, env)\
     #            or or_node.cond2.accept(self, env)
     #
-    # def visit_id(self, id_node, env):
-    #     """
-    #     Identifier (variable name) resolution
-    #     """
-    #     return env.lookup(id_node.identifier)
-    #
+    def visit_id(self, id_node, env):
+        """
+        Identifier (variable name) resolution
+        """
+        return env.lookup(id_node.identifier)
+
     # def visit_fun(self, fun_node, env):
     #     """
     #     Function expression evaluation.

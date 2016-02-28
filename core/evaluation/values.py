@@ -13,15 +13,17 @@ class Primitive(FunVal):
     """
     Primitive function
     """
-    def __init__(self, proc, env):
+    def __init__(self, name, proc, fun_type, env):
+        self.name = name
         self.proc = proc
+        self.fun_type = fun_type
         self.env = env
 
     def apply(self, *args):
         return self.proc(*args)
 
     def __repr__(self):
-        return '<built-in function {0}>'.format(self.env.get_name(self))
+        return '<built-in function {0}>'.format(self.name)
 
 
 class Closure(FunVal):
@@ -45,9 +47,4 @@ class Closure(FunVal):
         )
 
     def __repr__(self):
-        name = self.env.get_name(self)
-
-        if name is None:
-            return '<anonymous function>'
-
-        return '<function {0} at {1}>'.format(name, hex(id(self)))
+        return '<function at {0}>'.format(hex(id(self)))
