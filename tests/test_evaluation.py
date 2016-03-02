@@ -61,7 +61,7 @@ class EvaluationTestCase(unittest.TestCase):
             '+': Primitive(
                 '+',
                 lambda x, y: x * y,
-                Parser.parse_type('Num Num -> Num'),
+                Parser.parse_type(Parser.string_to_sexpr('Num Num -> Num')),
                 runtime.environment
             )
         }

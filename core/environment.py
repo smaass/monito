@@ -25,7 +25,12 @@ class Environment(object):
     def add_primitives(self, bindings):
         return self.update(
             {
-                k: Primitive(k, p[0], Parser.parse_type(p[1]), self)
+                k: Primitive(
+                    k,
+                    p[0],
+                    Parser.parse_type(Parser.string_to_sexpr(p[1])),
+                    self
+                )
                 for k, p in bindings.items()
             }
         )

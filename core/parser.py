@@ -110,28 +110,36 @@ class Parser(object):
             .split()
 
     @classmethod
-    def parse_type(cls, type):
+    def parse_type(cls, type_sexpr):
 
-        if isinstance(type, str):
-            if type == 'Num':
+        if isinstance(type_sexpr, str):
+            if type_sexpr == 'Num':
                 return NumType()
-            if type == 'Str':
+            if type_sexpr == 'Str':
                 return StringType()
-            if type == 'Bool':
+            if type_sexpr == 'Bool':
                 return BoolType()
+            if type_sexpr == 'Dyn':
+                return DynamicType()
+            if type_sexpr == 'Void':
+                return UnitType()
 
-        if isinstance(type, list):
+        if isinstance(type_sexpr, list):
             try:
-                separator = type.index('->')
-                assert separator == len(type) - 2
-                arg_types = [cls.parse_type(arg) for arg in type[:separator]]
-                ret_type = cls.parse_type(type[-1:][0])
+                separator = type_sexpr.index('->')
+                assert separator == len(type_sexpr) - 2
+                arg_types = [
+                    cls.parse_type(arg) for arg in type_sexpr[:separator]
+                ]
+                ret_type = cls.parse_type(type_sexpr[-1:][0])
                 return FunType(arg_types, ret_type)
 
             except ValueError:
-                assert len(type) == 2
-                assert type[0] == 'List'
-                return ListType(cls.parse_type(type[1]))
+                assert len(type_sexpr) == 2
+                assert type_sexpr[0] == 'List'
+                return ListType(cls.parse_type(type_sexpr[1]))
+
+        raise TypeError("unknown type ({0})".format(type_sexpr))
 
     @classmethod
     def parse_arg(cls, arg_sexpr):

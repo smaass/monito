@@ -107,6 +107,25 @@ class ParserTestCase(unittest.TestCase):
             )
         )
 
+    def test_parse_type(self):
+
+        self.assertEqual(Parser.parse_type('Num'), NumType())
+        self.assertEqual(Parser.parse_type('Str'), StringType())
+        self.assertEqual(Parser.parse_type('Bool'), BoolType())
+        self.assertEqual(Parser.parse_type('Void'), UnitType())
+        self.assertEqual(Parser.parse_type('Dyn'), DynamicType())
+        self.assertEqual(
+            Parser.parse_type(['Num', '->', 'Num']),
+            FunType([NumType()], NumType())
+        )
+        self.assertEqual(
+            Parser.parse_type(['->', 'Void']), FunType([], UnitType())
+        )
+        self.assertEqual(
+            Parser.parse_type([['Str', '->', 'Str'], '->', 'Num']),
+            FunType([FunType([StringType()], StringType())], NumType())
+        )
+
     def test_parse_args(self):
 
         args_str = '([x: (Num -> Str)] [y: (List Num)] z)'
