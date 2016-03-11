@@ -3,6 +3,9 @@ class Type(object):
     def __eq__(self, other):
         return self.is_consistent_with(other)
 
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     def consistency(self, other_type):
         if self.is_consistent_with(other_type):
             return self
